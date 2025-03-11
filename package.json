@@ -1,0 +1,32 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": "20"
+  },
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsup src --minify",
+    "start": "node dist/server.js",
+    "lint": "npx biome check"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/node": "^22.13.9",
+    "prisma": "^6.4.1",
+    "tsup": "^8.4.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.4.1",
+    "fastify": "^5.2.1",
+    "zod": "^3.24.2"
+  }
+}
