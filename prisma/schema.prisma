@@ -1,0 +1,174 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  EMPLOYEE
+  ADMIN
+}
+
+model Address {
+  id String @id @default(cuid())
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  number       String?
+  street       String?
+  neighborhood String?
+  complement   String?
+  city         String?
+  state        String? @default("SP")
+  country      String? @default("BR")
+  zipCode      String?
+  latitude     Float?
+  longitude    Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Order Order[]
+  Cart  Cart[]
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String?  @unique
+  password  String?
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Address Address[]
+  Order   Order[]
+  Cart    Cart[]
+}
+
+enum OrderStatus {
+  PENDING
+  CANCELLED
+  PROCESSING
+  DELIVERING
+  DELIVERED
+}
+
+model Order {
+  id String @id @default(cuid())
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  address   Address @relation(fields: [addressId], references: [id])
+  addressId String
+
+  status OrderStatus @default(PENDING)
+  total  Float?
+  items  String[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Pizza   Pizza?  @relation(fields: [pizzaId], references: [id])
+  pizzaId String?
+
+  Drink   Drink?  @relation(fields: [drinkId], references: [id])
+  drinkId String?
+
+  Dessert   Dessert? @relation(fields: [dessertId], references: [id])
+  dessertId String?
+}
+
+model Pizza {
+  id String @id @default(cuid())
+
+  active      Boolean @default(true)
+  name        String?
+  description String?
+  price       Float?
+  image       String?
+  size        Float?
+  flavor      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Order Order[]
+  Cart  Cart[]
+}
+
+model Drink {
+  id String @id @default(cuid())
+
+  active      Boolean @default(true)
+  name        String?
+  description String?
+  price       Float?
+  image       String?
+  size        Float?
+  type        String?
+  flavor      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Order Order[]
+  Cart  Cart[]
+}
+
+model Dessert {
+  id String @id @default(cuid())
+
+  active      Boolean @default(true)
+  name        String?
+  description String?
+  price       Float?
+  image       String?
+  size        Float?
+  type        String?
+  flavor      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Order Order[]
+  Cart  Cart[]
+}
+
+model Cart {
+  id String @id @default(cuid())
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  address   Address @relation(fields: [addressId], references: [id])
+  addressId String
+
+  status OrderStatus @default(PENDING)
+  total  Float?
+  items  String[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Pizza   Pizza?  @relation(fields: [pizzaId], references: [id])
+  pizzaId String?
+
+  Drink   Drink?  @relation(fields: [drinkId], references: [id])
+  drinkId String?
+
+  Dessert   Dessert? @relation(fields: [dessertId], references: [id])
+  dessertId String?
+}
