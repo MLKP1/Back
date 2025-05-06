@@ -1,0 +1,159 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./db.db"
+}
+
+enum Role {
+  USER
+  EMPLOYEE
+  ADMIN
+}
+
+model Address {
+  id           String @id @default(cuid())
+  number       Int
+  street       String
+  neighborhood String
+  complement   String
+  city         String
+  state        String @default("SP")
+  country      String @default("BR")
+  zipCode      String
+  latitude     Float
+  longitude    Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  @@map("addresses")
+}
+
+model User {
+  id       String @id @default(cuid())
+  name     String
+  email    String @unique
+  password String
+  role     Role   @default(USER)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Address Address[]
+  Order   Order[]
+  Cart    Cart?
+
+  @@map("users")
+}
+
+enum OrderStatus {
+  PENDING
+  CANCELLED
+  PROCESSING
+  DELIVERING
+  DELIVERED
+}
+
+model Order {
+  id     String      @id @default(cuid())
+  status OrderStatus @default(PENDING)
+  total  Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  pizzas   Pizza[]
+  drinks   Drink[]
+  desserts Dessert[]
+
+  @@map("orders")
+}
+
+model Pizza {
+  id          String  @id @default(cuid())
+  active      Boolean @default(true)
+  name        String
+  description String?
+  price       Int
+  image       String?
+  slices      Int
+  flavor      String
+  slug        String? @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Order Order[]
+  Cart  Cart[]
+
+  @@map("pizzas")
+}
+
+model Drink {
+  id          String  @id @default(cuid())
+  active      Boolean @default(true)
+  name        String
+  description String?
+  price       Int
+  image       String?
+  volume      Int
+  type        String
+  flavor      String
+  slug        String? @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Order Order[]
+  Cart  Cart[]
+
+  @@map("drinks")
+}
+
+model Dessert {
+  id          String  @id @default(cuid())
+  active      Boolean @default(true)
+  name        String
+  description String?
+  price       Int
+  image       String?
+  size        String
+  type        String
+  flavor      String
+  slug        String? @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Order Order[]
+  Cart  Cart[]
+
+  @@map("desserts")
+}
+
+model Cart {
+  id     String      @id @default(cuid())
+  status OrderStatus @default(PENDING)
+  total  Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  pizzas   Pizza[]
+  drinks   Drink[]
+  desserts Dessert[]
+
+  @@map("carts")
+}
