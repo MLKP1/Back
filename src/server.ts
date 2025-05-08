@@ -1,18 +1,11 @@
-import fastify, { type FastifyReply } from 'fastify'
-
-const app = fastify()
-
-app.get('/', (_, reply: FastifyReply) => {
-  return reply.status(200).send({
-    message: 'Hello, World!',
-  })
-})
+import { app } from './app'
+import { env } from './env'
 
 app
   .listen({
     host: '0.0.0.0',
-    port: 3333,
+    port: env.PORT,
   })
   .then(() => {
-    console.log('Server Running on 3333!')
+    console.log(`Server Running on ${env.PORT}!`)
   })
