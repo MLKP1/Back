@@ -6,6 +6,9 @@
   "engines": {
     "node": "20"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsup src",
