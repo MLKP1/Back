@@ -7,12 +7,6 @@ datasource db {
   url      = "file:./db.db"
 }
 
-enum Role {
-  USER
-  EMPLOYEE
-  ADMIN
-}
-
 model Address {
   id           String @id @default(cuid())
   number       Int
@@ -22,30 +16,36 @@ model Address {
   city         String
   state        String @default("SP")
   country      String @default("BR")
-  zipCode      String
+  zipCode      String @map("zip_code")
   latitude     Float
   longitude    Float
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique @map("user_id")
 
   @@map("addresses")
 }
 
+enum UserRole {
+  CUSTOMER
+  EMPLOYEE
+  ADMIN
+}
+
 model User {
-  id       String @id @default(cuid())
+  id       String   @id @default(cuid())
   name     String
-  email    String @unique
+  email    String   @unique
   password String
-  role     Role   @default(USER)
+  role     UserRole @default(CUSTOMER)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  Address Address[]
+  Address Address?
   Order   Order[]
   Cart    Cart?
 
@@ -65,11 +65,11 @@ model Order {
   status OrderStatus @default(PENDING)
   total  Int
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id")
 
   pizzas   Pizza[]
   drinks   Drink[]
@@ -78,19 +78,30 @@ model Order {
   @@map("orders")
 }
 
+enum PizzaSizes {
+  MEDIUM
+  LARGE
+  FAMILY
+}
+
+enum PizzaType {
+  SWEET
+  SALTY
+}
+
 model Pizza {
-  id          String  @id @default(cuid())
-  active      Boolean @default(true)
+  id          String     @id @default(cuid())
+  active      Boolean    @default(true)
   name        String
   description String?
   price       Int
   image       String?
-  slices      Int
-  flavor      String
-  slug        String? @unique
+  size        PizzaSizes
+  type        PizzaType
+  slug        String?    @unique
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   Order Order[]
   Cart  Cart[]
@@ -98,20 +109,25 @@ model Pizza {
   @@map("pizzas")
 }
 
+enum DrinkType {
+  SODA
+  JUICE
+  ALCOHOLIC
+}
+
 model Drink {
-  id          String  @id @default(cuid())
-  active      Boolean @default(true)
+  id          String    @id @default(cuid())
+  active      Boolean   @default(true)
   name        String
   description String?
   price       Int
   image       String?
   volume      Int
-  type        String
-  flavor      String
-  slug        String? @unique
+  type        DrinkType
+  slug        String?   @unique
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   Order Order[]
   Cart  Cart[]
@@ -119,20 +135,24 @@ model Drink {
   @@map("drinks")
 }
 
+enum DessertType {
+  SWEET
+  SALTY
+}
+
 model Dessert {
-  id          String  @id @default(cuid())
-  active      Boolean @default(true)
+  id          String      @id @default(cuid())
+  active      Boolean     @default(true)
   name        String
   description String?
   price       Int
   image       String?
   size        String
-  type        String
-  flavor      String
-  slug        String? @unique
+  type        DessertType
+  slug        String?     @unique
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   Order Order[]
   Cart  Cart[]
@@ -145,11 +165,11 @@ model Cart {
   status OrderStatus @default(PENDING)
   total  Int
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique @map("user_id")
 
   pizzas   Pizza[]
   drinks   Drink[]

@@ -4,4 +4,4 @@ dist
 build
 coverage
 .idea
-prisma/db.db
+prisma/db.*
