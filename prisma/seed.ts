@@ -1,5 +1,5 @@
-import { prisma } from '../src/lib/prisma'
 import { fakerPT_BR as faker } from '@faker-js/faker'
+import { prisma } from '../src/lib/prisma'
 
 console.time('time')
 
