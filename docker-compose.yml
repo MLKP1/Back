@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: bitnami/postgresql:latest
+    container_name: pizza-stars
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRESQL_USERNAME=lucas
+      - POSTGRESQL_PASSWORD=lucas123
+      - POSTGRESQL_DATABASE=pizza-stars
+    volumes:
+      - postgres_data:/bitnami/postgresql
+
+volumes:
+  postgres_data:
