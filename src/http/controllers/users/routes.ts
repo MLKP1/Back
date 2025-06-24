@@ -14,7 +14,7 @@ import { update } from './update'
 
 export async function usersRoutes(app: FastifyInstance) {
   app.post('/users', register)
-  app.get('/user/:email', { onRequest: [verifyJWT] }, getUser)
+  app.get('/user', { onRequest: [verifyJWT] }, getUser)
   // TODO: separate the route of update into more
   app.patch('/user/:id', { onRequest: [verifyJWT] }, update)
   app.delete('/user/:id', { onRequest: [verifyJWT] }, remove)
