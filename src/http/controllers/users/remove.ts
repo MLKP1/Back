@@ -1,15 +1,10 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
-import { z } from 'zod'
 
 import { UserNotExistsError } from '@/services/errors/user-not-exists-error'
 import { makeRemoveService } from '@/services/factories/make-remove-service'
 
 export async function remove(request: FastifyRequest, reply: FastifyReply) {
-  const removeParamsSchema = z.object({
-    id: z.string().cuid(),
-  })
-
-  const { id } = removeParamsSchema.parse(request.params)
+  const id = request.user.sub
 
   try {
     const removeService = makeRemoveService()

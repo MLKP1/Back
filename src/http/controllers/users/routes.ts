@@ -17,7 +17,7 @@ export async function usersRoutes(app: FastifyInstance) {
   app.get('/user', { onRequest: [verifyJWT] }, getUser)
   // TODO: separate the route of update into more
   app.patch('/user', { onRequest: [verifyJWT] }, update)
-  app.delete('/user/:id', { onRequest: [verifyJWT] }, remove)
+  app.delete('/user', { onRequest: [verifyJWT] }, remove)
 
   app.post('/auth/login', authenticate)
   app.patch('/auth/refresh', refresh)
