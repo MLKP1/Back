@@ -5,10 +5,6 @@ import { UserNotExistsError } from '@/services/errors/user-not-exists-error'
 import { makeUpdateService } from '@/services/factories/make-update-service'
 
 export async function update(request: FastifyRequest, reply: FastifyReply) {
-  const updateParamsSchema = z.object({
-    id: z.string().cuid(),
-  })
-
   const updateBodySchema = z
     .object({
       name: z.string().min(2),
@@ -21,7 +17,7 @@ export async function update(request: FastifyRequest, reply: FastifyReply) {
       message: 'At least one field must be provided for update',
     })
 
-  const { id } = updateParamsSchema.parse(request.params)
+  const id = request.user.sub
   const data = updateBodySchema.parse(request.body)
 
   let user = null
@@ -37,5 +33,10 @@ export async function update(request: FastifyRequest, reply: FastifyReply) {
     throw err
   }
 
-  return reply.status(200).send(user)
+  return reply.status(200).send({
+    user: {
+      ...user,
+      password: undefined,
+    },
+  })
 }
