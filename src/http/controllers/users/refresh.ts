@@ -1,7 +1,11 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
 export async function refresh(request: FastifyRequest, reply: FastifyReply) {
-  await request.jwtVerify({ onlyCookie: true })
+  try {
+    await request.jwtVerify({ onlyCookie: true })
+  } catch (err) {
+    return reply.status(401).send({ message: 'Unauthorized.' })
+  }
 
   const { role } = request.user
 

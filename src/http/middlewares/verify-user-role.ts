@@ -10,7 +10,11 @@ const roleHierarchy: Record<Role, Role[]> = {
 
 export function verifyUserRole(roleToVerify: Role) {
   return async (request: FastifyRequest, reply: FastifyReply) => {
-    await request.jwtVerify()
+    try {
+      await request.jwtVerify()
+    } catch (err) {
+      return reply.status(401).send({ message: 'Unauthorized.' })
+    }
     const { role } = request.user
 
     const allowedRoles = roleHierarchy[role]
