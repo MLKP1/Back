@@ -19,7 +19,7 @@ app.register(fastifyCors, {
       cb(null, true)
       return
     }
-    cb(new Error('Not allowed'), false)
+    cb(new Error(`Not allowed from origin ${origin}`), false)
   },
   credentials: true,
   methods: '*',
