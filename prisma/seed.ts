@@ -12,6 +12,15 @@ async function seed() {
   await prisma.drink.deleteMany()
   await prisma.pizza.deleteMany()
 
+  const admin = await prisma.user.create({
+    data: {
+      email: 'admin@gmail.com',
+      name: 'Admin',
+      password: 'dnx42697',
+      role: 'ADMIN',
+    },
+  })
+
   const users = await Promise.all(
     Array.from({
       length: faker.number.int({ min: 250, max: 300 }),
