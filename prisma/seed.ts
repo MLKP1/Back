@@ -1,4 +1,5 @@
 import { fakerPT_BR as faker } from '@faker-js/faker'
+import { hash } from 'bcryptjs'
 import { prisma } from '../src/lib/prisma'
 
 console.time('time')
@@ -16,7 +17,7 @@ async function seed() {
     data: {
       email: 'admin@gmail.com',
       name: 'Admin',
-      password: 'dnx42697',
+      password: await hash('dnx42697', 10),
       role: 'ADMIN',
     },
   })
@@ -29,7 +30,7 @@ async function seed() {
         data: {
           name: faker.person.fullName(),
           email: faker.internet.email(),
-          password: faker.internet.password(),
+          password: await hash(faker.internet.password(), 10),
           createdAt: faker.date.recent({ days: 40 }),
           updatedAt: faker.date.recent({ days: 30 }),
         },
