@@ -1,4 +1,5 @@
 import { fakerPT_BR as faker } from '@faker-js/faker'
+import { hash } from 'bcryptjs'
 import { prisma } from '../src/lib/prisma'
 
 console.time('time')
@@ -12,6 +13,15 @@ async function seed() {
   await prisma.drink.deleteMany()
   await prisma.pizza.deleteMany()
 
+  const admin = await prisma.user.create({
+    data: {
+      email: 'admin@gmail.com',
+      name: 'Admin',
+      password: await hash('dnx42697', 10),
+      role: 'ADMIN',
+    },
+  })
+
   const users = await Promise.all(
     Array.from({
       length: faker.number.int({ min: 250, max: 300 }),
@@ -20,7 +30,7 @@ async function seed() {
         data: {
           name: faker.person.fullName(),
           email: faker.internet.email(),
-          password: faker.internet.password(),
+          password: await hash(faker.internet.password(), 10),
           createdAt: faker.date.recent({ days: 40 }),
           updatedAt: faker.date.recent({ days: 30 }),
         },
