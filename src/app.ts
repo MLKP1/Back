@@ -11,10 +11,7 @@ export const app = fastify()
 
 app.register(fastifyCors, {
   origin: (origin, cb) => {
-    const allowedOrigins = [
-      'http://localhost:5500',
-      'https://mlkp1.github.io/Front2/',
-    ]
+    const allowedOrigins = ['http://localhost:5500', 'https://mlkp1.github.io']
     if (!origin || allowedOrigins.includes(origin)) {
       cb(null, true)
       return
