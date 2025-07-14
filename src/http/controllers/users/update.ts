@@ -2,7 +2,7 @@ import type { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 import { UserNotExistsError } from '@/services/errors/user-not-exists-error'
-import { makeUpdateService } from '@/services/factories/make-update-service'
+import { makeUpdateService } from '@/services/factories/users/make-update-service'
 
 export async function update(request: FastifyRequest, reply: FastifyReply) {
   const updateBodySchema = z

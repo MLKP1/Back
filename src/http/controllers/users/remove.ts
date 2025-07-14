@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
 import { UserNotExistsError } from '@/services/errors/user-not-exists-error'
-import { makeRemoveService } from '@/services/factories/make-remove-service'
+import { makeRemoveService } from '@/services/factories/users/make-remove-service'
 
 import { logout } from './logout'
 
