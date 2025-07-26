@@ -53,6 +53,10 @@ app.setErrorHandler((error, _, reply) => {
       .send({ message: 'Validation error.', issues: error.format() })
   }
 
+  if (error.message.includes("Can't reach database server")) {
+    return reply.status(503).send({ message: 'Database error.' })
+  }
+
   if (env.NODE_ENV !== 'prod') {
     console.error(error)
   } else {
