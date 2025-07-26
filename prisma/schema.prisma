@@ -8,15 +8,15 @@ datasource db {
 }
 
 model Address {
-  id           String @id @default(cuid())
+  id           String  @id @default(cuid())
   number       Int
   street       String
   neighborhood String
-  complement   String
+  complement   String?
   city         String
-  state        String @default("SP")
-  country      String @default("BR")
-  zipCode      String @map("zip_code")
+  state        String  @default("SP")
+  country      String  @default("BR")
+  zipCode      Int     @map("zip_code")
   latitude     Float
   longitude    Float
 

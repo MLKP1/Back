@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
-import { makeGetUserService } from '@/services/factories/make-get-user-service'
+import { makeGetUserService } from '@/services/factories/users/make-get-user-service'
 
 export async function getUser(request: FastifyRequest, reply: FastifyReply) {
   const getUser = makeGetUserService()
