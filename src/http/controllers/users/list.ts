@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
 import { UserNotExistsError } from '@/services/errors/user-not-exists-error'
-import { makeListService } from '@/services/factories/make-list-service'
+import { makeListService } from '@/services/factories/users/make-list-service'
 
 export async function list(_: FastifyRequest, reply: FastifyReply) {
   let users = null

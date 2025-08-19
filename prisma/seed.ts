@@ -57,7 +57,7 @@ async function seed() {
           street: faker.location.street(),
           neighborhood: faker.location.secondaryAddress(),
           number: Number.parseInt(faker.location.buildingNumber()),
-          zipCode: faker.location.zipCode(),
+          zipCode: Number.parseInt(faker.location.zipCode()),
           latitude: faker.location.latitude(),
           longitude: faker.location.longitude(),
           userId: randomUser.id,

@@ -11,15 +11,12 @@ export const app = fastify()
 
 app.register(fastifyCors, {
   origin: (origin, cb) => {
-    const allowedOrigins = [
-      'http://localhost:5500',
-      'https://mlkp1.github.io/Front2/',
-    ]
+    const allowedOrigins = ['http://localhost:5500', 'https://mlkp1.github.io']
     if (!origin || allowedOrigins.includes(origin)) {
       cb(null, true)
       return
     }
-    cb(new Error('Not allowed'), false)
+    cb(new Error(`Not allowed from origin ${origin}`), false)
   },
   credentials: true,
   methods: '*',
@@ -51,6 +48,10 @@ app.setErrorHandler((error, _, reply) => {
     return reply
       .status(400)
       .send({ message: 'Validation error.', issues: error.format() })
+  }
+
+  if (error.message.includes("Can't reach database server")) {
+    return reply.status(503).send({ message: 'Database error.' })
   }
 
   if (env.NODE_ENV !== 'prod') {
