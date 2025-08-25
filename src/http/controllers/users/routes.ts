@@ -10,6 +10,8 @@ import { logout } from './logout'
 import { refresh } from './refresh'
 import { register } from './register'
 import { remove } from './remove'
+import { resetPassword } from './resetPassword'
+import { sendCode } from './sendCode'
 import { update } from './update'
 
 export async function usersRoutes(app: FastifyInstance) {
@@ -22,6 +24,8 @@ export async function usersRoutes(app: FastifyInstance) {
   app.post('/auth/login', authenticate)
   app.patch('/auth/refresh', refresh)
   app.delete('/auth/logout', { onRequest: [verifyJWT] }, logout)
+  app.post('/auth/send-code', sendCode)
+  app.post('/auth/reset-password', resetPassword)
 
   app.get('/users', { onRequest: [verifyUserRole('ADMIN')] }, list)
 }

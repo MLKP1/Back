@@ -7,6 +7,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model AuthCodes {
+  id   String @id @default(cuid())
+  code Int    @unique
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("auth_codes")
+}
+
 model Address {
   id           String  @id @default(cuid())
   number       Int
@@ -45,9 +57,10 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  Address Address?
-  Order   Order[]
-  Cart    Cart?
+  AuthCodes AuthCodes[]
+  Address   Address?
+  Order     Order[]
+  Cart      Cart?
 
   @@map("users")
 }

@@ -10,5 +10,5 @@
     "editor.defaultFormatter": "Prisma.prisma",
     "editor.formatOnSave": true
   },
-  "cSpell.words": ["bitnami", "zipcode"]
+  "cSpell.words": ["bitnami", "fkey", "pkey", "zipcode"]
 }
