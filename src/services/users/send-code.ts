@@ -4,7 +4,7 @@ import { CodeGeneratedRecentlyError } from '../errors/code-generated-recently-er
 import { UserNotExistsError } from '../errors/user-not-exists-error'
 
 import { generateAuthCode } from '@/lib/nanoid'
-import { sendMail } from '@/lib/nodemailer'
+import { resend } from '@/lib/resend'
 import dayjs from 'dayjs'
 import { UnableToSendEmailError } from '../errors/unable-to-send-email-error'
 
@@ -52,7 +52,8 @@ export class SendCodeService {
       },
     })
 
-    const emailSent = await sendMail({
+    const emailSent = await resend.emails.send({
+      from: 'Pizza Stars <suporte@pizzastars.com>',
       to: email,
       subject: `Seu código Pizza Stars é ${code}`,
       text: `Aqui está seu código: ${code}`,
@@ -145,13 +146,12 @@ export class SendCodeService {
         </body>
         </html>
       `,
-      priority: 'high',
     })
 
-    if (!emailSent.messageId) {
+    if (emailSent.error) {
       throw new UnableToSendEmailError()
     }
 
-    return { messageId: emailSent.messageId }
+    return { messageId: emailSent.data.id }
   }
 }
