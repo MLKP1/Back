@@ -6,8 +6,7 @@ const envSchema = z.object({
   PORT: z.coerce.number().min(1000).max(9999).default(3333),
   NODE_ENV: z.enum(['dev', 'test', 'prod']).default('dev'),
   JWT_SECRET: z.string(),
-  GMAIL_USER: z.string().email(),
-  GMAIL_PASS: z.string(),
+  RESEND_API_KEY: z.string(),
 })
 
 const _env = envSchema.safeParse(process.env)

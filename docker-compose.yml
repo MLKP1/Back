@@ -1,13 +1,13 @@
 services:
   postgres:
     image: bitnami/postgresql:latest
-    container_name: pizza-stars
+    container_name: tcc-back
     ports:
-      - '5432:5432'
+      - '5433:5432'
     environment:
-      - POSTGRESQL_USERNAME=lucas
-      - POSTGRESQL_PASSWORD=lucas123
-      - POSTGRESQL_DATABASE=pizza-stars
+      - POSTGRESQL_USERNAME=tcc
+      - POSTGRESQL_PASSWORD=tcc123
+      - POSTGRESQL_DATABASE=tcc-back
     volumes:
       - postgres_data:/bitnami/postgresql
 

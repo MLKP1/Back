@@ -1,4 +1,4 @@
-import { env } from '@/env'
+/* import { env } from '@/env'
 import { type SendMailOptions, createTransport } from 'nodemailer'
 
 const transporter = createTransport({
@@ -25,4 +25,4 @@ export async function sendMail(options: SendMailOptions) {
 
   const email = await transporter.sendMail(mailOptions)
   return email
-}
+} */
