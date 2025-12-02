@@ -24,7 +24,8 @@ app.register(fastifyCors, {
     cb(new Error(`Not allowed from origin ${origin}`), false)
   },
   credentials: true,
-  methods: '*',
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
 })
 
 app.get('/', (_, reply: FastifyReply) => {
